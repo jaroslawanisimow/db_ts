@@ -25,17 +25,9 @@ async function main() {
       genre.GenreId
     );
     const albumsIds = tracks.map((track) => track.AlbumId);
-    const albums = await db.all(
-      "SELECT ArtistId FROM albums WHERE AlbumId IN (" +
-        albumsIds.join(",") +
-        ")"
-    );
+    const albums = await db.all(`SELECT ArtistId FROM albums WHERE AlbumId IN (${albumsIds.join()})`);
     const artistsIds = albums.map((album) => album.ArtistId);
-    const artists = await db.all(
-      "SELECT * FROM artists WHERE ArtistId IN (" +
-        artistsIds.join(",") +
-        ") ORDER BY Name"
-    );
+    const artists = await db.all(`SELECT * FROM artists WHERE ArtistId IN (${artistsIds.join()}) ORDER BY Name`);
 
     return res.send(artists);
   });
